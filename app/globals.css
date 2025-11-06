@@ -1,0 +1,850 @@
+/* ----------------------------------------
+   File: app/global.css
+---------------------------------------- */
+:root {
+  --bg-a: #0a1a0a;
+  --bg-b: #1a3a1a;
+  --brand: #9bc17c;
+  --panel: rgba(255, 255, 255, 0.06);
+  --line: rgba(75, 85, 72, 0.5);
+  --panel2: rgba(40, 50, 40, 0.95);
+  --panel3: rgba(30, 40, 30, 0.8);
+  --text: #fff;
+  --text-dim: #9aa4b2;
+  --ok: #a7f3d0;
+  --bad: #fca5a5;
+}
+
+/* Base + background */
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 10;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial,
+    sans-serif;
+  color: var(--text);
+  accent-color: #6b8e42;
+  background: url("/images/bg.jpg") center / cover no-repeat fixed;
+  overflow: hidden; /* no page scroll */
+  padding: 20px;
+}
+
+/* Wrapper pinned to 90vh */
+.rf-wrap {
+  height: 90vh;
+  max-height: 90vh;
+  position: relative;
+  padding: 16px 20px; /* slightly tighter to fit 90vh */
+  isolation: isolate;
+  overflow: hidden; /* nothing bleeds */
+}
+
+/* Logo */
+.rf-logo {
+  position: absolute;
+  top: 12px;
+  left: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.rf-logo-icon {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--brand);
+}
+.rf-logo-text {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--brand);
+  letter-spacing: 2px;
+}
+
+/* Topbar (stays inside 90vh) */
+.rf-topbar {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  z-index: 2;
+}
+.rf-total {
+  background: linear-gradient(
+    135deg,
+    rgba(55, 75, 40, 0.95),
+    rgba(45, 65, 35, 0.95)
+  );
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid rgba(80, 100, 70, 0.5);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  max-width: 48vw;
+}
+.btn-reset {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid rgba(80, 100, 70, 0.5);
+  background: linear-gradient(
+    135deg,
+    rgba(55, 75, 40, 0.95),
+    rgba(45, 65, 35, 0.95)
+  );
+  color: #fff;
+  font-size: 22px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Container fills remaining height, no overflow */
+.rf-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow: hidden;
+  padding-top: 72px; /* room under logo/topbar */
+  box-sizing: border-box;
+}
+
+/* AC + Roll tightened */
+.ac-row {
+  text-align: center;
+  margin-bottom: 8px;
+}
+.ac-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 100%;
+}
+.ac-label {
+  font-size: 15px;
+  font-weight: 500;
+}
+.ac-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(60, 80, 40, 0.6);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.ac-btn.is-active {
+  background: #6b8e42;
+}
+
+.roll-row {
+  text-align: center;
+  margin-bottom: 8px;
+}
+.btn-roll {
+  padding: 12px 44px;
+  background: #6b8e42;
+  border: none;
+  border-radius: 50px;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(107, 142, 66, 0.4);
+  max-width: 90vw;
+}
+
+/* ===== Board area uses all remaining height without scroll ===== */
+.char-grid {
+  flex: 1;
+  min-height: 0; /* allow children to shrink */
+  display: grid;
+  grid-auto-rows: auto;
+  gap: 12px;
+  align-items: start;
+  overflow: hidden;
+}
+
+/* Each character row = main card + results */
+.char-row {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 320px 1fr; /* iPad-friendly left width */
+  gap: 12px;
+  align-items: start;
+}
+
+/* Make columns non-scrolling and clip overflow */
+.char-main {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.char-results {
+  min-width: 0;
+  min-height: 0;
+  overflow-x: auto; /* horizontal scroll */
+  overflow-y: hidden;
+}
+
+/* Results: horizontal row with scroll */
+.results-stack {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 8px;
+  min-height: min-content;
+}
+
+/* Cards */
+.card {
+  width: 280px;
+  border-radius: 12px;
+  border: 1px solid rgba(50, 50, 50, 0.6);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  background: rgba(20, 20, 20, 0.95);
+}
+.card--main {
+  padding: 16px;
+}
+.card--secondary {
+  background: rgba(20, 25, 20, 0.95);
+  padding: 14px;
+  border: 1px solid rgba(70, 80, 70, 0.4);
+  position: relative;
+  width: 280px;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Main head */
+.main-head {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+.avatar {
+  background: #000;
+  border: 1px solid rgba(60, 60, 60, 0.5);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.avatar--square {
+  width: 88px;
+  height: 88px;
+  border-radius: 6px;
+}
+.avatar--square.lg {
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+}
+.avatar-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: #666;
+}
+.main-meta {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.main-name {
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #fff;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  letter-spacing: 0.3px;
+}
+.main-total {
+  font-size: 13px;
+  font-weight: 400;
+  color: #999;
+}
+
+/* Options */
+.opts {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2px;
+}
+.opt {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  color: #e0e0e0;
+  font-weight: 400;
+}
+.opt input[type="checkbox"],
+.opt input[type="radio"] {
+  width: 10px;
+  height: 10px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.opt-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  align-items: center;
+}
+.flex-1 {
+  flex: 1;
+}
+
+/* Secondary */
+.badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.badge.is-on {
+  background: rgba(34, 197, 94, 0.2);
+  border: 1px solid rgba(34, 197, 94, 0.5);
+  color: #86efac;
+}
+.badge.is-off {
+  background: rgba(60, 60, 60, 0.3);
+  border: 1px solid rgba(100, 100, 100, 0.5);
+}
+.sec-head {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.sec-head.is-inactive {
+  opacity: 0.55;
+}
+.sec-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  padding-top: 4px;
+}
+.box-total {
+  background: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  padding: 10px 12px;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: auto;
+  color: #fff;
+}
+
+/* Result cards (compact to fit 90vh) */
+.result-card {
+  background: rgba(10, 12, 10, 0.95);
+  border: 1px solid rgba(40, 45, 40, 0.6);
+  border-radius: 12px;
+  padding: 14px;
+  min-width: 220px;
+  max-width: 240px;
+  min-height: 280px;
+  flex-shrink: 0;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.result-head {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+  position: relative;
+}
+.result-head .title-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.result-head .emoji {
+  font-size: 16px;
+}
+.result-head .title {
+  font-weight: 700;
+  font-size: 13px;
+  white-space: nowrap;
+}
+.result-head .badge-row {
+  display: flex;
+  justify-content: flex-end;
+}
+.crit {
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: rgba(234, 88, 12, 0.2);
+  border: 1px solid rgba(234, 88, 12, 0.5);
+  color: #fdba74;
+  text-transform: uppercase;
+  font-weight: 800;
+  white-space: nowrap;
+  display: inline-block;
+}
+.pill {
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 8px;
+  font-weight: 700;
+  border: 1px solid transparent;
+  text-transform: capitalize;
+  display: inline-block;
+  white-space: nowrap;
+}
+.pill.ok {
+  background: rgba(34, 197, 94, 0.2);
+  border-color: rgba(34, 197, 94, 0.5);
+  color: #86efac;
+}
+.pill.bad {
+  background: rgba(220, 38, 38, 0.2);
+  border-color: rgba(220, 38, 38, 0.5);
+  color: #fca5a5;
+}
+
+.kv {
+  font-size: 13px;
+  color: #e0e0e0;
+  margin-bottom: 10px;
+}
+.kv .row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+  padding: 2px 0;
+}
+.kv .k {
+  color: #cbd5e1;
+  font-weight: 400;
+}
+.kv .v {
+  font-weight: 600;
+  color: #fff;
+}
+
+.total {
+  margin-top: 10px;
+  margin-bottom: 12px;
+  font-weight: 700;
+  border-top: 1px solid rgba(60, 65, 60, 0.4);
+  padding-top: 10px;
+  font-size: 14px;
+  color: #fff;
+}
+
+.chips {
+  margin-top: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+.chip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  font-size: 11px;
+}
+.chip.chip-dfstk {
+  grid-column: 1 / -1;
+}
+.chip-tag {
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+.chip-text {
+  font-size: 11px;
+  font-weight: 600;
+}
+.chip-base {
+  background: rgba(34, 197, 94, 0.12);
+  border-color: rgba(34, 197, 94, 0.35);
+  color: #86efac;
+}
+.chip-gloom {
+  background: rgba(59, 130, 246, 0.12);
+  border-color: rgba(59, 130, 246, 0.35);
+  color: #93c5fd;
+}
+.chip-zphr {
+  background: rgba(244, 63, 94, 0.12);
+  border-color: rgba(244, 63, 94, 0.35);
+  color: #fda4af;
+}
+.chip-htrmk {
+  background: rgba(234, 179, 8, 0.12);
+  border-color: rgba(234, 179, 8, 0.35);
+  color: #fde68a;
+}
+.chip-dfstk {
+  background: rgba(190, 24, 93, 0.12);
+  border-color: rgba(190, 24, 93, 0.35);
+  color: #f5a3cf;
+}
+.chip-dex {
+  background: rgba(148, 163, 184, 0.12);
+  border-color: rgba(148, 163, 184, 0.35);
+  color: #d1d5db;
+}
+
+.empty-hint {
+  opacity: 0.65;
+  font-size: 14px;
+}
+
+/* Settings (kept inside 90vh) */
+.btn-settings {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  width: 54px;
+  height: 54px;
+  border-radius: 12px;
+  background: linear-gradient(
+    135deg,
+    rgba(40, 50, 40, 0.95),
+    rgba(25, 35, 25, 0.95)
+  );
+  border: 1px solid rgba(80, 90, 80, 0.4);
+  color: #fff;
+  font-size: 28px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  z-index: 3;
+}
+.settings-panel {
+  position: absolute;
+  bottom: 72px;
+  right: 12px;
+  width: 280px;
+  background: linear-gradient(
+    135deg,
+    rgba(25, 40, 25, 0.98),
+    rgba(15, 25, 15, 0.98)
+  );
+  border-radius: 16px;
+  padding: 16px;
+  border: 1px solid rgba(70, 80, 70, 0.4);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  z-index: 4;
+  max-height: calc(90vh - 120px);
+  overflow: hidden;
+}
+.settings-profile {
+  text-align: center;
+  margin-bottom: 14px;
+}
+.pfp {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(
+    135deg,
+    rgba(40, 50, 40, 0.8),
+    rgba(30, 40, 30, 0.8)
+  );
+  border: 2px solid rgba(70, 80, 70, 0.5);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  margin-bottom: 6px;
+  position: relative;
+}
+.pfp-badge {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 22px;
+  height: 22px;
+  background: #6b8e42;
+  border-radius: 50%;
+  border: 2px solid rgba(15, 25, 15, 0.98);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+.pfp-size {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 2px;
+}
+.pfp-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #ddd;
+}
+.settings-section {
+  margin-bottom: 14px;
+}
+.section-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #ddd;
+}
+.pref-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.pref-label {
+  font-size: 13px;
+  color: #aaa;
+}
+.btn-primary {
+  flex: 1;
+  padding: 10px;
+  background: #6b8e42;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.btn-ghost {
+  padding: 10px 14px;
+  background: rgba(40, 50, 40, 0.7);
+  border: 1px solid rgba(80, 90, 80, 0.4);
+  border-radius: 8px;
+  color: #bbb;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.settings-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* Switch */
+.switch {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  cursor: pointer;
+}
+.switch input {
+  display: none;
+}
+.track {
+  width: 44px;
+  height: 24px;
+  background: #6b8e42;
+  border-radius: 12px;
+  position: relative;
+}
+.thumb {
+  width: 18px;
+  height: 18px;
+  background: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 3px;
+}
+.thumb.right {
+  right: 3px;
+}
+.thumb.left {
+  left: 3px;
+}
+
+/* iPad / medium screens: exact row look, still no overflow */
+@media (max-width: 1100px) {
+  .rf-container {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+  .char-row {
+    grid-template-columns: 300px 1fr;
+  }
+}
+@media (max-width: 900px) {
+  /* Stack on narrow screens but still keep 90vh without scroll */
+  .char-row {
+    grid-template-columns: 1fr;
+  }
+  .results-stack {
+    flex-direction: column;
+  }
+  .btn-roll {
+    width: 100%;
+  }
+  .result-card {
+    min-width: 100%;
+  }
+}
+
+/* Desktop: allow vertical flow so rows don't overlap */
+@media (min-width: 1101px) {
+  body {
+    overflow: auto;
+  }
+
+  .rf-wrap {
+    height: auto;
+    max-height: none;
+    overflow: visible; /* let content define height */
+    padding-bottom: 80px; /* breathing room for the FAB */
+  }
+
+  .rf-container {
+    height: auto;
+    overflow: visible;
+  }
+
+  .char-grid,
+  .char-results,
+  .results-stack {
+    overflow: visible; /* no clipping that can cause visual overlap */
+  }
+}
+/* ===== Small devices: stack, allow scroll, fit cards ===== */
+/* Phones & small tablets — stack, let page scroll, no 90vh clamp */
+@media (max-width: 900px) {
+  /* allow scrolling */
+  body {
+    overflow: auto;
+  }
+
+  /* remove height clamp so rows don't collide */
+  .rf-wrap {
+    height: auto;
+    max-height: none;
+    overflow: visible;
+    padding: 12px;
+  }
+  .rf-container {
+    height: auto;
+    overflow: visible;
+    padding-top: 64px; /* keep space under logo/topbar */
+  }
+
+  /* one-column rows; results below each main card */
+  .char-grid {
+    overflow: visible;
+  }
+  .char-row {
+    grid-template-columns: 1fr;
+  }
+  .char-results {
+    overflow: visible;
+    padding-bottom: 8px;
+  }
+  .results-stack {
+    flex-direction: column;
+    overflow: visible; /* avoid clipping */
+    gap: 12px;
+  }
+
+  /* make cards fill width so they don't float beside each other */
+  .card,
+  .card--secondary {
+    width: 80%;
+  }
+
+  /* result cards fit viewport width */
+  .result-card {
+    min-width: 80%;
+    max-width: 80%;
+  }
+
+  /* slightly tighter controls on small screens */
+  .ac-group {
+    gap: 8px;
+  }
+  .ac-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 13px;
+  }
+  .btn-roll {
+    width: 100%;
+    padding: 12px 24px;
+  }
+  .avatar--square {
+    width: 72px;
+    height: 72px;
+  }
+  .main-name {
+    font-size: 16px;
+  }
+}
+
+/* Ultra-small devices (e.g., 360–400px) */
+@media (max-width: 400px) {
+  .ac-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+  }
+  .avatar--square {
+    width: 64px;
+    height: 64px;
+  }
+  .result-card {
+    min-width: 94vw;
+    max-width: 94vw;
+  }
+}

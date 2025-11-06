@@ -1,0 +1,35 @@
+# Node / package managers
+node_modules
+npm-debug.log*
+yarn.lock
+yarn-error.log*
+pnpm-lock.yaml
+pnpm-debug.log*
+
+# Next build cache and outputs
+.next
+.next/cache
+out
+dist
+
+# Vercel / local env
+.vercel
+.env
+.env*.local
+
+# Git / CI
+.git
+.gitignore
+.github
+.gitlab
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea
+.vscode
+*.log
+
+# Tests / coverage
+coverage
