@@ -1,13 +1,15 @@
 // File: app/page.tsx
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 const rangerActive = "/images/ranger-active.jpg";
 const wolfActive = "/images/wolf-active.jpg";
 const wolfInactive = "/images/wolf-inactive.jpg";
 
 export default function Page() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
   const [creatureAC, setCreatureAC] = useState(15);
   const [firstRound, setFirstRound] = useState(false);
   const [dreadfulStrike, setDreadfulStrike] = useState(false);
@@ -203,11 +205,78 @@ export default function Page() {
     setCreatureAC(15);
   };
 
+  useEffect(() => {
+    // Enhanced video initialization
+    const video = videoRef.current;
+    if (!video) return;
+
+    const playVideo = async () => {
+      try {
+        // Reset video to start
+        video.currentTime = 0;
+
+        // Ensure all attributes are set
+        video.muted = true;
+        video.playsInline = true;
+        video.loop = true;
+
+        // Force load
+        video.load();
+
+        // Attempt to play
+        await video.play();
+        console.log("Video playing successfully");
+      } catch (err) {
+        console.error("Video autoplay failed:", err);
+
+        // Fallback: try playing on user interaction
+        const playOnInteraction = async () => {
+          try {
+            await video.play();
+            console.log("Video started after user interaction");
+            // Remove listeners after successful play
+            document.removeEventListener("click", playOnInteraction);
+            document.removeEventListener("touchstart", playOnInteraction);
+          } catch (e) {
+            console.error("Failed to play video on interaction:", e);
+          }
+        };
+
+        document.addEventListener("click", playOnInteraction, { once: true });
+        document.addEventListener("touchstart", playOnInteraction, {
+          once: true,
+        });
+      }
+    };
+
+    playVideo();
+
+    // Cleanup
+    return () => {
+      if (video) {
+        video.pause();
+      }
+    };
+  }, []);
+
   return (
     <div className="rf-wrap">
       <div className="rf-logo">
-        <div className="rf-logo-icon">⚔</div>
-        <div className="rf-logo-text">RUNE FATE</div>
+        <video
+          ref={videoRef}
+          className="rf-logo-video"
+          muted
+          playsInline
+          loop
+          preload="auto"
+          aria-label="Rune Fate animated logo"
+        >
+          <source src="/media/logo-animation.webm" type="video/webm" />
+          <source src="/media/logo_website_960.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        {/* Accessible fallback text (visually hidden) */}
+        <span className="sr-only">Rune Fate</span>
       </div>
 
       {(attackResultsMain.length > 0 || attackResultsSecondary.length > 0) && (
@@ -451,7 +520,7 @@ export default function Page() {
                     }`}
                     onClick={() => setSecondaryActive(!secondaryActive)}
                   >
-                    <div className="avatar avatar--square lg">
+                    <div className="avatar avatar--square xxxl">
                       <img
                         src={
                           secondaryActive
