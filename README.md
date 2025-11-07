@@ -1,20 +1,23 @@
-# Roll of Fate — Next.js + Tailwind (pure CSS skin preserved)
+# Project Setup Guide
 
-This is your app migrated to **Next.js (App Router)** with **Tailwind** configured.  
-All functionality and visual CSS classes are preserved exactly; only the project scaffolding changed.
+Follow the steps below to set up and run the project locally.
 
-## Quick start
+## 📦 Prerequisites
 
-```bash
-npm install
-npm run dev
-# open http://localhost:3000
-```
+Before you begin, make sure you have the following installed:
 
-Images live under `public/images/`. Replace the placeholder JPGs with your real assets if you have them:
-- `/public/images/ranger-active.jpg`
-- `/public/images/wolf-active.jpg`
-- `/public/images/wolf-inactive.jpg`
-- `/public/images/bg.jpg`
+- [Node.js](https://nodejs.org/) (version 18 or higher recommended)
+- [npm](https://www.npmjs.com/) (comes with Node.js)
 
-Your original styles are in `app/globals.css` (after the Tailwind layers). The page component is in `app/page.tsx`.
+## 🚀 Getting Started
+
+1. **Unzip the Project**
+
+   Extract the downloaded project archive to your preferred directory.
+
+2. **Install Dependencies**
+
+   Open a terminal in the project’s root directory and run:
+   ```bash
+   npm install
+   npm run dev to run locally
